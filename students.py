@@ -25,9 +25,14 @@ def validate_email(value: str) -> bool:
     """Проверяет формат адреса электронной почты.
 
     Простая проверка без внешних зависимостей: одна «собака», домен с точкой
-    и доменной зоной не короче двух букв.
+    и доменной зоной не короче двух букв; в локальной части точки не стоят
+    в начале, в конце и не идут подряд.
     """
-    return bool(EMAIL_RE.match((value or "").strip()))
+    address = (value or "").strip()
+    if not EMAIL_RE.match(address):
+        return False
+    local = address.split("@", 1)[0]
+    return not (local.startswith(".") or local.endswith(".") or ".." in local)
 
 
 def add(items: list[dict], name: str, group: str, email: str = "") -> dict:

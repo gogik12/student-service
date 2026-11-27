@@ -10,6 +10,11 @@ def test_validate_email_rejects_broken_address():
         assert not students.validate_email(bad)
 
 
+def test_validate_email_rejects_dot_edges_and_double_dots():
+    for bad in ["ivanov..petrov@mail.ru", "ivanov.@mail.ru", ".ivanov@mail.ru"]:
+        assert not students.validate_email(bad)
+
+
 def test_add_stores_lowercase_email():
     items = []
     record = students.add(items, "Иванов Иван", "ОВБИ-304б", "Ivanov@Example.RU")
